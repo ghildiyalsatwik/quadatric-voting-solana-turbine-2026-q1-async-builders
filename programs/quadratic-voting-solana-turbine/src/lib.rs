@@ -1,16 +1,32 @@
 use anchor_lang::prelude::*;
 
+pub mod instructions;
+pub use instructions::*;
+
+pub mod state;
+pub use state::*;
+
 declare_id!("7ivULttFBsFjhXc4pPVjq8F1DbWNQSESc5HipRm2dE2M");
 
 #[program]
 pub mod quadratic_voting_solana_turbine {
     use super::*;
 
-    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
-        msg!("Greetings from: {:?}", ctx.program_id);
-        Ok(())
+    pub fn initialize_dao(ctx: Context<InitDao>, name: String) -> Result<()> {
+        //msg!("Greetings from: {:?}", ctx.program_id);
+        ctx.accounts.init_dao(name, ctx.bumps)
+    }
+
+    pub fn initialize_proposal(ctx: Context<InitProposal>, metadata: String) -> Result<()> {
+
+        ctx.accounts.init_proposal(ctx.bumps, metadata)
+    }
+
+    pub fn cast_vote(ctx: Context<CastVote>, vote_type: u8) -> Result<()> {
+
+        ctx.accounts.cast_vote(ctx.bumps, vote_type)
     }
 }
 
-#[derive(Accounts)]
-pub struct Initialize {}
+// #[derive(Accounts)]
+// pub struct Initialize {}
