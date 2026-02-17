@@ -33,6 +33,4 @@ impl<'info> InitProposal<'info> {
 
         Ok(())
     }
-
-
 }

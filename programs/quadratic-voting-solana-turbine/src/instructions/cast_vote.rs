@@ -8,7 +8,7 @@ pub struct CastVote<'info> {
     #[account(mut)]
     pub voter: Signer<'info>,
     #[account(
-        seeds = [b"dao", dao_account.authority.key().as_ref(), dao_account.bump.to_le_bytes().as_ref()],
+        seeds = [b"dao", dao_account.authority.key().as_ref(), dao_account.name.as_bytes()],
         bump = dao_account.bump
     )]
     pub dao_account: Account<'info, Dao>,
