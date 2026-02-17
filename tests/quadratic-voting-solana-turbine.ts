@@ -2,7 +2,7 @@ import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { QuadraticVotingSolanaTurbine } from "../target/types/quadratic_voting_solana_turbine";
 import { Keypair, PublicKey, SystemProgram } from "@solana/web3.js";
-import { TOKEN_2022_PROGRAM_ID, getOrCreateAssociatedTokenAccount, mintTo, createMint, Mint, Account } from "@solana/spl-token";
+import { TOKEN_PROGRAM_ID, getOrCreateAssociatedTokenAccount, mintTo, createMint, Mint, Account } from "@solana/spl-token";
 import { BN } from "bn.js";
 
 const confirmTx = async (signature: string): Promise<string> => {
@@ -40,13 +40,13 @@ describe("quadratic-voting-solana-turbine", () => {
 
   let proposal_creator = Keypair.generate();
 
-  let proposal = PublicKey.findProgramAddressSync([Buffer.from("proposal"), dao.toBuffer(), Buffer.from(dao_name)], program.programId)[0];
+  const proposal_count = new BN(0);
+
+  let proposal = PublicKey.findProgramAddressSync([Buffer.from("proposal"), dao.toBuffer(), proposal_count.toArrayLike(Buffer, "le", 8)], program.programId)[0];
 
   let voter = Keypair.generate();
 
-  const proposal_count = new BN(1);
-
-  const voteAccount = PublicKey.findProgramAddressSync([Buffer.from("vote"), proposal_creator.publicKey.toBuffer(), proposal_count.toArrayLike(Buffer, "le", 8)], program.programId)[0];
+  const voteAccount = PublicKey.findProgramAddressSync([Buffer.from("vote"), voter.publicKey.toBuffer(), proposal.toBuffer()], program.programId)[0];
 
   let mint_authority = Keypair.generate();
 
@@ -70,13 +70,13 @@ describe("quadratic-voting-solana-turbine", () => {
 
   it("Token mint creation, ATA creation and minting tokens", async () => {
 
-    mint = await createMint(anchor.getProvider().connection, mint_authority, mint_authority.publicKey, null, 9, undefined, undefined, TOKEN_2022_PROGRAM_ID);
+    mint = await createMint(anchor.getProvider().connection, mint_authority, mint_authority.publicKey, null, 9, undefined, undefined, TOKEN_PROGRAM_ID);
 
-    voter_ata = await getOrCreateAssociatedTokenAccount(anchor.getProvider().connection, voter, mint, voter.publicKey, false, undefined, undefined, TOKEN_2022_PROGRAM_ID);
+    voter_ata = await getOrCreateAssociatedTokenAccount(anchor.getProvider().connection, voter, mint, voter.publicKey, false, undefined, undefined, TOKEN_PROGRAM_ID);
 
     const mintAmount = 1_000_000_000;
 
-    await mintTo(anchor.getProvider().connection, mint_authority, mint, voter_ata.address, mint_authority, mintAmount, [], undefined, TOKEN_2022_PROGRAM_ID);
+    await mintTo(anchor.getProvider().connection, mint_authority, mint, voter_ata.address, mint_authority, mintAmount, [], undefined, TOKEN_PROGRAM_ID);
 
   });
   

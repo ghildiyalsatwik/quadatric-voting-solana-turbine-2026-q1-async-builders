@@ -14,7 +14,7 @@ pub struct CastVote<'info> {
     pub dao_account: Account<'info, Dao>,
     #[account(
         mut,
-        seeds = [b"proposal", proposal.authority.key().as_ref(), dao_account.proposal_count.to_le_bytes().as_ref()],
+        seeds = [b"proposal", dao_account.key().as_ref(), dao_account.proposal_count.to_le_bytes().as_ref()],
         bump = proposal.bump)]
     pub proposal: Account<'info, Proposal>,
     #[account(
