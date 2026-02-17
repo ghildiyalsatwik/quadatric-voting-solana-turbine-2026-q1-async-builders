@@ -6,7 +6,7 @@ pub use instructions::*;
 pub mod state;
 pub use state::*;
 
-declare_id!("GbmsouqZjnb7uaHFdYQQNyWCbutpc3BsMdFqiH1SRxd3");
+declare_id!("5VPxgqqUV8qR2qpEjgkyb4wuwk5Wj29MV336WQFiZPMR");
 
 #[program]
 pub mod quadratic_voting_solana_turbine {

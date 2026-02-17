@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-quadratic_voting_solana_turbine = "GbmsouqZjnb7uaHFdYQQNyWCbutpc3BsMdFqiH1SRxd3"
+quadratic_voting_solana_turbine = "7CnboSyWg9i5KgA3wt5MsxRUarjwjxSSrnFM95wPE2Qu"
 
 [registry]
 url = "https://api.apr.dev"

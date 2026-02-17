@@ -53,6 +53,8 @@ describe("quadratic-voting-solana-turbine", () => {
   let mint: PublicKey;
 
   let voter_ata: Account;
+
+  console.log(`Program ID: ${program.programId.toBase58()}`);
   
   it("Airdrop", async () => {
 
