@@ -1,13 +1,12 @@
 [toolchain]
 package_manager = "yarn"
-anchor_version = "0.32.1"
 
 [features]
 resolution = true
 skip-lint = false
 
 [programs.localnet]
-quadratic_voting_solana_turbine = "7ivULttFBsFjhXc4pPVjq8F1DbWNQSESc5HipRm2dE2M"
+quadratic_voting_solana_turbine_2 = "GbmsouqZjnb7uaHFdYQQNyWCbutpc3BsMdFqiH1SRxd3"
 
 [registry]
 url = "https://api.apr.dev"
