@@ -1,5 +1,5 @@
 [package]
-name = "quadratic-voting-solana-turbine-2"
+name = "quadratic-voting-solana-turbine"
 version = "0.1.0"
 description = "Created with Anchor"
 edition = "2021"
