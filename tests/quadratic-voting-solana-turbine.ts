@@ -2,7 +2,7 @@ import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { QuadraticVotingSolanaTurbine } from "../target/types/quadratic_voting_solana_turbine";
 import { Keypair, PublicKey, SystemProgram } from "@solana/web3.js";
-import { TOKEN_2022_PROGRAM_ID, getOrCreateAssociatedTokenAccount, mintTo, createMint } from "@solana/spl-token";
+import { TOKEN_2022_PROGRAM_ID, getOrCreateAssociatedTokenAccount, mintTo, createMint, Mint, Account } from "@solana/spl-token";
 import { BN } from "bn.js";
 
 const confirmTx = async (signature: string): Promise<string> => {
@@ -24,7 +24,7 @@ const confirmTx = async (signature: string): Promise<string> => {
 
 };
 
-describe("quadratic-voting-solana-turbine", async () => {
+describe("quadratic-voting-solana-turbine", () => {
   // Configure the client to use the local cluster.
   anchor.setProvider(anchor.AnchorProvider.env());
 
@@ -50,13 +50,9 @@ describe("quadratic-voting-solana-turbine", async () => {
 
   let mint_authority = Keypair.generate();
 
-  const mint = await createMint(anchor.getProvider().connection, mint_authority, mint_authority.publicKey, null, 9, undefined, undefined, TOKEN_2022_PROGRAM_ID);
+  let mint: PublicKey;
 
-  const voter_ata = await getOrCreateAssociatedTokenAccount(anchor.getProvider().connection, voter, mint, voter.publicKey, false, undefined, undefined, TOKEN_2022_PROGRAM_ID);
-
-  const mintAmount = 1_000_000_000;
-
-  await mintTo(anchor.getProvider().connection, mint_authority, mint, voter_ata.address, voter.publicKey, mintAmount, [], undefined, TOKEN_2022_PROGRAM_ID);
+  let voter_ata: Account;
   
   it("Airdrop", async () => {
 
@@ -67,6 +63,18 @@ describe("quadratic-voting-solana-turbine", async () => {
       await anchor.getProvider().connection.confirmTransaction(sig, "confirmed");
     
     }));
+
+  });
+
+  it("Token mint creation, ATA creation and minting tokens", async () => {
+
+    mint = await createMint(anchor.getProvider().connection, mint_authority, mint_authority.publicKey, null, 9, undefined, undefined, TOKEN_2022_PROGRAM_ID);
+
+    voter_ata = await getOrCreateAssociatedTokenAccount(anchor.getProvider().connection, voter, mint, voter.publicKey, false, undefined, undefined, TOKEN_2022_PROGRAM_ID);
+
+    const mintAmount = 1_000_000_000;
+
+    await mintTo(anchor.getProvider().connection, mint_authority, mint, voter_ata.address, mint_authority, mintAmount, [], undefined, TOKEN_2022_PROGRAM_ID);
 
   });
   
