@@ -36,9 +36,9 @@ impl<'info> CastVote<'info> {
 
     pub fn cast_vote(&mut self, bumps: CastVoteBumps, vote_type: u8) -> Result<()> {
 
-        //let voting_credits = (self.creator_token_account.amount as f64).sqrt() as u64;
+        let voting_credits = (self.creator_token_account.amount as f64).sqrt() as u64;
 
-        let voting_credits = integer_sqrt(self.creator_token_account.amount);
+        //let voting_credits = integer_sqrt(self.creator_token_account.amount);
 
         self.vote_account.set_inner(Vote { authority: (self.voter.key()), vote_type, vote_credits: (voting_credits), bump: (bumps.vote_account) });
 
@@ -46,23 +46,23 @@ impl<'info> CastVote<'info> {
     }
 }
 
-pub fn integer_sqrt(value: u64) -> u64 {
+// pub fn integer_sqrt(value: u64) -> u64 {
     
-    if value == 0 {
+//     if value == 0 {
         
-        return 0;
-    }
+//         return 0;
+//     }
 
-    let mut x0 = value / 2 + 1;
+//     let mut x0 = value / 2 + 1;
 
-    let mut x1 = (x0 + value / x0) / 2;
+//     let mut x1 = (x0 + value / x0) / 2;
 
-    while x1 < x0 {
+//     while x1 < x0 {
         
-        x0 = x1;
+//         x0 = x1;
 
-        x1 = (x0 + value / x0) / 2;
-    }
+//         x1 = (x0 + value / x0) / 2;
+//     }
 
-    x0
-}
+//     x0
+// }
